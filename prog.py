@@ -1,3 +1,4 @@
+import argparse
 import extract_cookies
 import latlon
 import locationsharinglib
@@ -6,9 +7,16 @@ import sys
 import time
 import unidecode
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--cookies_file', help=
+'you can pass your cookies file or it will be loaded from your browser')
+args = parser.parse_args()
 
-cookies_file = 'cookies.txt'
-extract_cookies.extract_cookies(cookies_file)
+if args.cookies_file==None:
+    cookies_file = 'cookies.txt'
+    extract_cookies.extract_cookies(cookies_file)
+else:
+    cookies_file=args.cookies_file
 
 google_email = 'land.rover.discoveryii2002@gmail.com'
 
