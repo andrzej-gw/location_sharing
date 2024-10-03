@@ -1,4 +1,4 @@
-Add flag - Do you want to extract cookies?
+Add flag - Do you want to extract cookies? - DONE
 
 Server like in Norwey
 
