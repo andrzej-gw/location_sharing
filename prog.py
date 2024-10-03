@@ -12,9 +12,9 @@ data = {
 }
 
 
-extract_cookies.extract_cookies("cookies.txt")
-
 cookies_file = 'cookies.txt'
+extract_cookies.extract_cookies(cookies_file)
+
 google_email = 'land.rover.discoveryii2002@gmail.com'
 #  google_email = 'emilia.partyka@gmail.com'
 
