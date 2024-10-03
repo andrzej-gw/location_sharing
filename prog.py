@@ -1,11 +1,10 @@
-from locationsharinglib import Service
-from unidecode import unidecode
-
-import sys
-import time
-import pyais
 import extract_cookies
 import latlon
+import locationsharinglib
+import pyais
+import sys
+import time
+import unidecode
 
 
 cookies_file = 'cookies.txt'
@@ -18,7 +17,7 @@ people = {}
 data={}
 
 while True:
-    service = Service(cookies_file=cookies_file, authenticating_account=google_email)
+    service = locationsharinglib.Service(cookies_file=cookies_file, authenticating_account=google_email)
     i=100000
     for person in service.get_all_people():
         #  print(person.nickname)
@@ -30,7 +29,7 @@ while True:
             }
         data[person.nickname]['lat']=person.latitude
         data[person.nickname]['lon']=person.longitude
-        data[person.nickname]['shipname']=unidecode(person.nickname)
+        data[person.nickname]['shipname']=unidecode.unidecode(person.nickname)
         data[person.nickname]['mmsi']=str(i)
         #  print(person.datetime)
         #  print(person.timestamp)
