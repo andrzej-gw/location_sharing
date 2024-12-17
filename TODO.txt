@@ -1,4 +1,7 @@
 Add flag - Do you want to extract cookies? - DONE
 
-Server like in Norwey
+Server like in Norwey - some
 
+Option to track locations
+
+Automatic generation of new cookies
