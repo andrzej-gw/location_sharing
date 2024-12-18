@@ -95,14 +95,17 @@ def start_server(host='0.0.0.0', port=49903):
     server_socket.listen(5)  # Listen for incoming connections
     print(f"Server listening on {host}:{port}")
 
-    while True:
-        # Accept a new client connection
-        client_socket, addr = server_socket.accept()
-        print(f"Accepted connection from {addr}")
-
-        # Handle the client in a new thread
-        client_handler = multiprocessing.Process(target=handle_client, args=(client_socket,))
-        client_handler.start()
+    try:
+        while True:
+            client_socket, addr = server_socket.accept()
+            print(f"Accepted connection from {addr}")
+            client_handler = multiprocessing.Process(target=handle_client, args=(client_socket,))
+            client_handler.start()
+    except KeyboardInterrupt:
+        print("Shutting down the server...")
+    finally:
+        server_socket.close()
+        print("Server socket closed.")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
