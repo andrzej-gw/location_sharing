@@ -5,3 +5,5 @@ Server like in Norwey - some
 Option to track locations
 
 Automatic generation of new cookies
+
+Add offset to new clients
