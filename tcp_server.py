@@ -22,8 +22,6 @@ def get_nmea_data(file, cond):
         service = locationsharinglib.Service(cookies_file=cookies_file, authenticating_account=google_email)
         i=100000
         for person in service.get_all_people():
-            #  print(person.nickname)
-            #  print(person.latitude)
             if not person.nickname in data:
                 data[person.nickname]={
                     'mmsi': '30000000',
@@ -33,25 +31,16 @@ def get_nmea_data(file, cond):
             data[person.nickname]['lon']=person.longitude
             data[person.nickname]['shipname']=unidecode.unidecode(person.nickname)
             data[person.nickname]['mmsi']=str(i)
-            #  print(person.datetime)
-            #  print(person.timestamp)
             if person.nickname in people:
                 A=latlon.LatLon(people[person.nickname][0], people[person.nickname][1])
                 B=latlon.LatLon(person.latitude, person.longitude)
                 distance_km=A.distance(B)
                 distance_nm=distance_km/1.852
                 time_in_hours=(person.timestamp-people[person.nickname][2])/1000/60/60
-                #  print("A:", A)
-                #  print("B:", B)
-                #  print("distance_km", distance_km)
-                #  print("distance_nm", distance_nm)
-                #  print("time_in_hours", time_in_hours)
                 if time_in_hours!=0:
                     heading=round(A.heading_initial(B), 2)%360
                     speed=round(distance_nm/time_in_hours, 2)
-                    #  print("speed", speed)
                     data[person.nickname]['speed']=str(speed)
-                    #  print("heading", heading)
                     data[person.nickname]['heading']=int(heading)
                     data[person.nickname]['course']=str(heading)
             people[person.nickname]=(person.latitude, person.longitude, person.timestamp)
@@ -69,20 +58,20 @@ def get_nmea_data(file, cond):
 def handle_client(client_socket):
     try:
         file = open("nmea_data", "r")
-        #  file.seek(0, os.SEEK_END)
+        lines = file.read()
+        lines = lines[max(0,len(lines)-72*10):] # Read last 10 messsages
+        client_socket.sendall(lines.encode('utf-8'))
+        print(f"Sent NMEA data to client: {lines}")
         while True:
             lines=file.read()
             with cond:
                 while not lines:
                     cond.wait()
                     lines=file.read()
-                    print("czekam")
                     
                 # Send NMEA to the client
                 client_socket.sendall(lines.encode('utf-8'))
-                print(f"Sent GPS location to client: {lines}")
-                
-                # Wait for 2 minutes before sending the next update
+                print(f"Sent NMEA data to client: {lines}")
     except Exception as e:
         print(f"Error with client: {e}")
     finally:

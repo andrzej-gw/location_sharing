@@ -1,9 +1,9 @@
 Add flag - Do you want to extract cookies? - DONE
 
-Server like in Norwey - some
+Server like in Norwey - DONE
 
 Option to track locations
 
-Automatic generation of new cookies
+Automatic generation of new cookies - first try
 
-Add offset to new clients
+Add offset to new clients - DONE
