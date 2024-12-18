@@ -50,9 +50,6 @@ def get_nmea_data(file, cond):
             file.flush()
             with cond:
                 cond.notify_all()
-            #  print(encoded[0])
-            #  sys.stdout.flush() 
-            #nc -u 0.0.0.0 1234
         time.sleep(120)
 
 def handle_client(client_socket):
