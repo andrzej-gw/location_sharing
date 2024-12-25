@@ -52,9 +52,9 @@ def get_nmea_data(file, cond):
             file.flush()
             with cond:
                 cond.notify_all()
-            if counter%15:
+            if counter%15==0:
                 save_track.save(person.nickname+"_"+person.id, person.latitude, person.longitude, person.timestamp)
-            counter += 1
+        counter += 1
         time.sleep(120)
 
 def handle_client(client_socket):
