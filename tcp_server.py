@@ -22,30 +22,29 @@ def get_nmea_data(file, cond):
         service = locationsharinglib.Service(cookies_file=cookies_file, authenticating_account=google_email)
         i=100000
         for person in service.get_all_people():
-            if not person.nickname in data:
-                data[person.nickname]={
-                    'mmsi': '30000000',
+            if not person.id in data:
+                data[person.id]={
                     'type': 19,
                 }
-            data[person.nickname]['lat']=person.latitude
-            data[person.nickname]['lon']=person.longitude
-            data[person.nickname]['shipname']=unidecode.unidecode(person.nickname)
-            data[person.nickname]['mmsi']=str(i)
-            if person.nickname in people:
-                A=latlon.LatLon(people[person.nickname][0], people[person.nickname][1])
+            data[person.id]['lat']=person.latitude
+            data[person.id]['lon']=person.longitude
+            data[person.id]['shipname']=unidecode.unidecode(person.nickname)
+            data[person.id]['mmsi']=str(i)
+            if person.id in people:
+                A=latlon.LatLon(people[person.id][0], people[person.id][1])
                 B=latlon.LatLon(person.latitude, person.longitude)
                 distance_km=A.distance(B)
                 distance_nm=distance_km/1.852
-                time_in_hours=(person.timestamp-people[person.nickname][2])/1000/60/60
+                time_in_hours=(person.timestamp-people[person.id][2])/1000/60/60
                 if time_in_hours!=0:
                     heading=round(A.heading_initial(B), 2)%360
                     speed=round(distance_nm/time_in_hours, 2)
-                    data[person.nickname]['speed']=str(speed)
-                    data[person.nickname]['heading']=int(heading)
-                    data[person.nickname]['course']=str(heading)
-            people[person.nickname]=(person.latitude, person.longitude, person.timestamp)
+                    data[person.id]['speed']=str(speed)
+                    data[person.id]['heading']=int(heading)
+                    data[person.id]['course']=str(heading)
+            people[person.id]=(person.latitude, person.longitude, person.timestamp)
             i+=1
-            encoded = pyais.encode_dict(data[person.nickname], radio_channel="B", talker_id="AIVDM")
+            encoded = pyais.encode_dict(data[person.id], radio_channel="B", talker_id="AIVDM")
             file.write(encoded[0]+"\n")
             file.flush()
             with cond:
