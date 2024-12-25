@@ -4,6 +4,7 @@ import latlon
 import locationsharinglib
 import multiprocessing
 import pyais
+import save_track
 import socket
 import sys
 import time
@@ -17,6 +18,8 @@ def get_nmea_data(file, cond):
     people = {}
 
     data={}
+
+    counter = 0
 
     while True:
         service = locationsharinglib.Service(cookies_file=cookies_file, authenticating_account=google_email)
@@ -49,6 +52,9 @@ def get_nmea_data(file, cond):
             file.flush()
             with cond:
                 cond.notify_all()
+            if counter%15:
+                save_track.save(person.nickname+"_"+person.id, person.latitude, person.longitude, person.timestamp)
+            counter += 1
         time.sleep(120)
 
 def handle_client(client_socket):

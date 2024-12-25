@@ -1,3 +1,4 @@
 cookies*
 __pycache__/
 nmea_data
+tracks/*.txt
